@@ -3,6 +3,8 @@ import random
 import numpy as np
 from .utils import rgb2gray, imresize
 
+xrange = range
+
 class Environment(object):
   def __init__(self, config):
     self.env = gym.make(config.env_name)
@@ -49,7 +51,7 @@ class Environment(object):
 
   @property
   def lives(self):
-    return self.env.ale.lives()
+    return self.env.unwrapped.ale.lives()
 
   @property
   def state(self):

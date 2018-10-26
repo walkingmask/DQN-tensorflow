@@ -1,5 +1,6 @@
 from __future__ import print_function
 import os
+from functools import reduce
 import time
 import random
 import numpy as np
@@ -11,6 +12,8 @@ from .history import History
 from .replay_memory import ReplayMemory
 from .ops import linear, conv2d, clipped_error
 from .utils import get_time, save_pkl, load_pkl
+
+xrange = range
 
 class Agent(BaseModel):
   def __init__(self, config, environment, sess):
@@ -325,7 +328,7 @@ class Agent(BaseModel):
 
     tf.initialize_all_variables().run()
 
-    self._saver = tf.train.Saver(self.w.values() + [self.step_op], max_to_keep=30)
+    self._saver = tf.train.Saver(list(self.w.values()) + [self.step_op], max_to_keep=30)
 
     self.load_model()
     self.update_target_q_network()
