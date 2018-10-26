@@ -52,6 +52,10 @@ class Agent(BaseModel):
         total_reward, self.total_loss, self.total_q = 0., 0., 0.
         ep_rewards, actions = [], []
 
+      # save model period periodically (0, 10M, 20M, 30M, 40M, 50M)
+      if self.step in [0, 10e6, 2*10e6, 3*10e6, 4*10e6, 5*10e6]:
+        self.save_model(self.step)
+
       # 1. predict
       action = self.predict(self.history.get())
       # 2. act
@@ -328,7 +332,7 @@ class Agent(BaseModel):
 
     tf.initialize_all_variables().run()
 
-    self._saver = tf.train.Saver(list(self.w.values()) + [self.step_op], max_to_keep=30)
+    self._saver = tf.train.Saver(list(self.w.values()) + [self.step_op], max_to_keep=100)
 
     self.load_model()
     self.update_target_q_network()

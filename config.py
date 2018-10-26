@@ -2,7 +2,7 @@ class AgentConfig(object):
   scale = 10000
   display = False
 
-  max_step = 5000 * scale
+  max_step = 5000 * scale + 1
   memory_size = 100 * scale
 
   batch_size = 32
