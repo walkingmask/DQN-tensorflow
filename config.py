@@ -32,6 +32,8 @@ class AgentConfig(object):
   _test_step = 5 * scale
   _save_step = _test_step * 10
 
+  save_root = '.'
+
 class EnvironmentConfig(object):
   env_name = 'Breakout-v0'
 

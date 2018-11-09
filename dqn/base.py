@@ -51,8 +51,15 @@ class BaseModel(object):
       return False
 
   @property
+  def save_root(self):
+    if not os.path.exists(self.config.save_root):
+      os.makedirs(self.config.save_root)
+    return self.config.save_root
+
+  @property
   def checkpoint_dir(self):
-    return os.path.join('checkpoints', self.model_dir)
+    _checkpoint_dir = os.path.join(self.save_root, 'checkpoints')
+    return os.path.join(_checkpoint_dir, self.model_dir)
 
   @property
   def model_dir(self):

@@ -19,7 +19,7 @@ class Agent(BaseModel):
   def __init__(self, config, environment, sess):
     super(Agent, self).__init__(config)
     self.sess = sess
-    self.weight_dir = 'weights'
+    self.weight_dir = os.path.join(self.save_root, 'weights')
 
     self.env = environment
     self.history = History(self.config)
@@ -93,7 +93,7 @@ class Agent(BaseModel):
 
           if max_avg_ep_reward * 0.9 <= avg_ep_reward:
             self.step_assign_op.eval({self.step_input: self.step + 1})
-            self.save_model(self.step + 1)
+            # self.save_model(self.step + 1)
 
             max_avg_ep_reward = max(max_avg_ep_reward, avg_ep_reward)
 
@@ -328,7 +328,7 @@ class Agent(BaseModel):
         self.summary_placeholders[tag] = tf.placeholder('float32', None, name=tag.replace(' ', '_'))
         self.summary_ops[tag]  = tf.summary.histogram(tag, self.summary_placeholders[tag])
 
-      self.writer = tf.summary.FileWriter('./logs/%s' % self.model_dir, self.sess.graph)
+      self.writer = tf.summary.FileWriter('{}/logs/{}'.format(self.save_root, self.model_dir), self.sess.graph)
 
     tf.initialize_all_variables().run()
 
