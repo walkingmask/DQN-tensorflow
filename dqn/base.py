@@ -28,6 +28,9 @@ class BaseModel(object):
       name = attr if not attr.startswith('_') else attr[1:]
       setattr(self, name, getattr(self.config, attr))
 
+    if not os.path.exists(self.save_root):
+      os.makedirs(self.config.save_root)
+
   def save_model(self, step=None):
     print(" [*] Saving checkpoints...")
     model_name = type(self).__name__
@@ -49,12 +52,6 @@ class BaseModel(object):
     else:
       print(" [!] Load FAILED: %s" % self.checkpoint_dir)
       return False
-
-  @property
-  def save_root(self):
-    if not os.path.exists(self.config.save_root):
-      os.makedirs(self.config.save_root)
-    return self.config.save_root
 
   @property
   def checkpoint_dir(self):
